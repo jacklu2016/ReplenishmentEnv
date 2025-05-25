@@ -42,12 +42,17 @@ class Visualizer:
             label_opts = opts.LabelOpts(is_show=True, position="bottom"))
 
         state_line = Line().add_xaxis(xaxis_data = dates.tolist())
+
+        df = pd.DataFrame([], columns=self.state_items)
+        #df.to_csv("output.csv", index=False)
+
         for index, item in enumerate(self.state_items):
             if sku == "overview":
                 value = np.sum(self.agent_states[warehouse, item, "history", "all_skus"][self.warmup_length:], 1)
             else:
                 value = self.agent_states[warehouse, item, "history", sku][self.warmup_length:]
             value = value.tolist()
+            df[item] = value
             color = self.colors[index % len(self.colors)]
             state_line.add_yaxis(
                 series_name=item,
@@ -113,6 +118,7 @@ class Visualizer:
             
         tl.add(grid, "{}".format(self.start_date.strftime("%Y-%m-%d")))
         output_name = "{}_{}.html".format(warehouse, sku)
+        df.to_csv(os.path.join(self.vis_path, "{}_{}.csv".format(warehouse, sku)))
         tl.render(os.path.join(self.vis_path, output_name))
 
     def render(self):

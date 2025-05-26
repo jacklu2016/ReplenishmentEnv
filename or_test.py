@@ -1,7 +1,7 @@
 import os
 from Baseline.OR_algorithm.base_stock import BS_static, BS_dynamic
 from Baseline.OR_algorithm.search_sS import sS_static, sS_hindsight
-env_name = "sku1.3_stores.standard"
+env_name = "sku3.3_stores.standard"
 
 # Base stock static mode
 vis_path = os.path.join("output", env_name, "BS_static")
